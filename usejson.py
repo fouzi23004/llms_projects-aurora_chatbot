@@ -317,7 +317,7 @@ ANSWER:"""
     def get_response(self, question: str) -> Tuple[str, str]:
         """Génère une réponse en utilisant le contexte, l'historique et le scoring hybride"""
         # Récupérer les documents pertinents depuis le JSON
-        docs = self.document_store.similarity_search(question, k=15)
+        docs = self.document_store.similarity_search(question, k=5)
 
         # Appliquer le scoring hybride
         hybrid_scored_docs = self._apply_hybrid_scoring(docs, question)
