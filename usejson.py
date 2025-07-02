@@ -7,6 +7,7 @@ import re
 from collections import Counter
 import numpy as np
 import os
+import config
 
 
 class ConversationMemory:
@@ -199,7 +200,7 @@ CONTEXT :
 INSTRUCTIONS:
 use the context given to you and some of your knowledge to answer the questions.
 if the subject gets out of the subject respond to the question anyway than remind him our subject.
-when you use the context use naturally without mentioning it.
+when you use the context use it naturally without mentioning it.
 
 
 QUESTION: {question}
@@ -431,7 +432,7 @@ ANSWER:"""
 def main():
     """Fonction principale avec interface utilisateur améliorée"""
     # Chemin vers le fichier JSON des documents
-    json_file_path = "ubuntu_microcloud_chunks1.json"  # Modifiez selon votre fichier
+    json_file_path = config.chunks['sections']  # Modifiez selon votre fichier
 
     # Vérifier si le fichier existe
     if not os.path.exists(json_file_path):
