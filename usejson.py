@@ -441,7 +441,7 @@ def main():
 
     bot = TVATunisiaBot(json_file_path)
 
-    print("=== Chatbot TVA Tunisie avec Base de Données JSON ===")
+    print("=== Chatbot Aurora avec Base de Données JSON ===")
     print("Commandes spéciales:")
     print("- 'quit' ou 'exit': quitter")
     print("- 'history': voir l'historique")
@@ -458,10 +458,10 @@ def main():
     bot.get_document_stats()
 
     while True:
-        question = input("\n🤖 Votre question: ").strip()
+        question = input("\n🤖 Your question: ").strip()
 
         if question.lower() in ['quit', 'exit']:
-            print("Au revoir!")
+            print("Bye Bye!")
             break
 
         elif question.lower() == 'history':
@@ -494,7 +494,7 @@ def main():
                     print("Format: weights <sémantique> <mots-clés> <contexte>")
                     print("Exemple: weights 0.5 0.4 0.1")
             except ValueError:
-                print("Erreur: veuillez utiliser des nombres décimaux")
+                print("Erreur: Please use decimal numbers for weights.")
             continue
 
         elif question.lower().startswith('save '):
@@ -502,7 +502,7 @@ def main():
             if filename:
                 bot.save_conversation(filename)
             else:
-                print("Veuillez spécifier un nom de fichier: save <nom_fichier>")
+                print("Specify file's name: save <nom_fichier>")
             continue
 
         elif question.lower().startswith('load '):
@@ -510,7 +510,7 @@ def main():
             if filename:
                 bot.load_conversation(filename)
             else:
-                print("Veuillez spécifier un nom de fichier: load <nom_fichier>")
+                print("Specify file's name: load <file_name>")
             continue
 
         elif not question:
@@ -518,10 +518,10 @@ def main():
 
         try:
             context, response = bot.get_response(question)
-            print(f"\n💬 Réponse: {response}")
+            print(f"\n💬 Response: {response}")
 
         except Exception as e:
-            print(f"❌ Erreur: {e}")
+            print(f"❌ Error: {e}")
 
 
 if __name__ == "__main__":
