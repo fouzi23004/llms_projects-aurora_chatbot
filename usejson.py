@@ -165,7 +165,7 @@ class Document:
         self.metadata = metadata or {}
 
 
-class TVATunisiaBot:
+class AuroraBot:
     """Chatbot spécialisé en TVA tunisienne avec base de données JSON et scoring hybride"""
 
     def __init__(self, json_file_path: str, max_history: int = 10):
@@ -438,9 +438,7 @@ def main():
     if not os.path.exists(json_file_path):
         print(f"Erreur: Le fichier {json_file_path} n'existe pas.")
         print("Veuillez créer un fichier JSON avec vos documents.")
-        return
-
-    bot = TVATunisiaBot(json_file_path)
+        return AuroraBot(json_file_path)
 
     print("=== Chatbot Aurora avec Base de Données JSON ===")
     print("Commandes spéciales:")
