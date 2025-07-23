@@ -2,9 +2,12 @@
 from bs4 import BeautifulSoup
 from typing import List, Dict
 
-from chunkers.html_chunker import chunk_by_sections
 from chunkers.openapi_chunker import chunk_openapi_spec
 from loaders.openapi_loader import load_openapi_spec
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # load .env variables
 
 def chunk_by_sections(soup: BeautifulSoup, url: str, page_title: str) -> List[Dict]:
     """Standard section-based chunking for regular documentation"""
@@ -40,16 +43,17 @@ def chunk_by_sections(soup: BeautifulSoup, url: str, page_title: str) -> List[Di
 
 
 
-def smart_chunk_dispatcher(soup: BeautifulSoup, url: str, page_title: str,is_api_page : bool) -> List[Dict]:
+def smart_chunk_dispatcher(soup: BeautifulSoup, url: str, page_title: str, is_api_page: bool) -> List[Dict]:
     """
     Enhanced dispatcher that better detects API documentation pages
     """
-  
-    
+
     if is_api_page:
-        spec_url = "https://documentation.ubuntu.com/lxd/latest/rest-api.yaml"
+        spec_filename = os.getenv("OPENAPI_SPEC_FILE", "rest-api.yaml")
+        base_url = os.getenv("UBUNTU_DOC_URL", "https://documentation.ubuntu.com/lxd/latest/")
+        spec_url = f"{base_url.rstrip('/')}/{spec_filename.lstrip('/')}"
         spec = load_openapi_spec(spec_url)
         return chunk_openapi_spec(spec, url, page_title)
-    # Otherwise, fall back to standard section chunking
+
     print("Using standard section chunking")
     return chunk_by_sections(soup, url, page_title)

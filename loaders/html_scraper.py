@@ -13,7 +13,7 @@ import json
 import os
 from typing import List, Dict
 
-from ingest import smart_chunk_dispatcher
+from chunkers.html_chunker import smart_chunk_dispatcher
 
 
 
