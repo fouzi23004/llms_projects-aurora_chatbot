@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import OpenSearchVectorSearch
 from langchain_core.documents import Document
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from opensearchpy import OpenSearch, RequestsHttpConnection, exceptions as opensearch_exceptions
 from typing import List
 from dotenv import load_dotenv

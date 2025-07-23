@@ -12,7 +12,7 @@ from vectorstore.embed_store import store_documents
 load_dotenv()
 
 # Load values from environment
-MAX_PAGES = int(os.getenv("MAX_PAGES", 100))
+MAX_PAGES = int(os.getenv("MAX_PAGES", 200))
 CHUNK_OUTPUT_FILE = os.getenv("CHUNK_OUTPUT_FILE", "ubuntu_microcloud_chunks2.json")
 UBUNTU_DOC_URL = os.getenv("UBUNTU_DOC_URL", "https://documentation.ubuntu.com/lxd/latest/")
 

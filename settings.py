@@ -9,8 +9,6 @@ class OpenSearchSettings(BaseSettings):
     password: SecretStr = Field(validation_alias="OPENSEARCH_PASSWORD")
     use_ssl: bool = Field(default=False, validation_alias="OPENSEARCH_USE_SSL")
     verify_certs: bool = Field(default=False, validation_alias="OPENSEARCH_VERIFY_CERTS")
-    ssl_assert_hostname: bool = Field(default=False, validation_alias="OPENSEARCH_SSL_ASSERT_HOSTNAME")
-    ssl_show_warn: bool = Field(default=False, validation_alias="OPENSEARCH_SSL_SHOW_WARN")
     index_name: str = Field(default="langchain_embeddings", validation_alias="OPENSEARCH_INDEX_NAME")
     embedding_model_name: str = Field(default="sentence-transformers/all-mpnet-base-v2", validation_alias="EMBEDDING_MODEL_NAME")
     model_config = {

@@ -9,10 +9,16 @@ from collections import Counter
 import numpy as np  
 from langchain_community.vectorstores import OpenSearchVectorSearch
 from opensearchpy import OpenSearch
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 import os
 from dotenv import load_dotenv
+from settings import OpenSearchSettings
 load_dotenv()
+# Initialize OpenSearch settings
+opensearch_config = OpenSearchSettings()
+VECTOR_DIM = 768  # Should match the embedding model output
+OPENSEARCH_URL = f"http://{opensearch_config.host}:{opensearch_config.port}"
+
 class ConversationMemory:
     """Manages conversation history with context extraction and keyword analysis"""
 
@@ -99,10 +105,10 @@ class ConversationMemory:
 
 class AuroraBot:
 
-    def __init__(self, opensearch_host: str = "localhost", opensearch_user: str = "admin", opensearch_password: str = os.getenv("OPENSEARCH_PASSWORD","admin"), opensearch_port: int = 9200, max_history: int = 10):
+    def __init__(self,  max_history: int = 10):
         # Set up the embeddings
-        self.embedding_model = HuggingFaceEmbeddings(model_name='sentence-transformers/all-mpnet-base-v2')
-        self.embeddings = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+        self.embedding_model = HuggingFaceEmbeddings(model_name=opensearch_config.embedding_model_name)
+        self.embeddings = SentenceTransformer(opensearch_config.embedding_model_name)
 
         # Initialize conversation memory
         self.memory = ConversationMemory(max_history=max_history)
@@ -110,16 +116,16 @@ class AuroraBot:
         # Set up Qdrant client
 # Set up OpenSearch client
         self.opensearch_client = OpenSearch(
-            hosts=[{'host': os.getenv("OPENSEARCH_HOST", opensearch_host), 'port': opensearch_port}],
-            http_auth=(os.getenv("OPENSEARCH_USER"), os.getenv("OPENSEARCH_PASSWORD")),  # Or use AWS/IAM auth as needed
-            use_ssl=False,
-            verify_certs=False  # ⚠️ Only for testing/dev
-)
+            hosts=[{'host': opensearch_config.host, 'port': opensearch_config.port}],
+            http_auth=(opensearch_config.user, opensearch_config.password.get_secret_value()),  # Or use AWS/IAM auth as needed
+            use_ssl=opensearch_config.use_ssl,
+            verify_certs=opensearch_config.verify_certs  # ⚠️ Only for testing/dev
+        )
         # Set up vector store
         self.vectorstore = OpenSearchVectorSearch(
-            opensearch_url=f"http://{os.getenv('OPENSEARCH_HOST', opensearch_host)}:{opensearch_port}",
+            opensearch_url=OPENSEARCH_URL,
             client=self.opensearch_client,
-            index_name='langchain_embeddings',
+            index_name= opensearch_config.index_name,
             embedding_function=self.embedding_model
         )
 
